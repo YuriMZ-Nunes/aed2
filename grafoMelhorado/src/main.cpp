@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-//#include <ctype.h>
 #include <string>
 
 using namespace std;
@@ -74,7 +73,7 @@ void listGraph(Graph* graph){
 
 void menuOptionVerify(char getChoise){
     int choise = getChoise - '0';
-        if(!isdigit(getChoise) || choise > 4 || choise < 1){
+        if(!isdigit(getChoise) || choise > 5 || choise < 1){
             cout << "ERRO: Insert syntax error in input menu option." << endl;
             exit(1); 
         }
@@ -132,7 +131,7 @@ int main(){
     Vertices* vertexOrigin;
     Vertices* destinationVertex;
 
-    while(1){
+    while(inputFile.is_open()){
         cout << "\n1. Add vertex" << endl;
         cout << "2. Add edge" << endl;
         cout << "3. List graph" << endl;
@@ -198,7 +197,13 @@ int main(){
                 break;
             case 4:
                 exit(1);
+            case 5: 
+                inputFile.close();
+                break;
         }
     }
+
+    cout << "Finalizou hein" << endl;
+    
 
 }
