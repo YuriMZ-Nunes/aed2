@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+//#include <ctype.h>
 #include <string>
 
 using namespace std;
@@ -9,130 +10,193 @@ const int MAX_VERTICES = 20;
 typedef struct Vertices Vertices;
 
 typedef struct{
-    int peso;
-    Vertices* verticeDestino;
-}Arestas;
+    int height;
+    Vertices* destinationVertex;
+}Edges;
 
 struct Vertices{
-    string nome;
-    Arestas aresta[MAX_VERTICES];
-    int numArestas;
+    string name;
+    Edges aresta[MAX_VERTICES];
+    int numOfEdges;
 };
 
 typedef struct{
     Vertices vertices[MAX_VERTICES];
-    int numVertices;
-}Grafo;
+    int numOfVertices;
+}Graph;
 
-Grafo criarGrafo(){
-    Grafo grafo;
-    grafo.numVertices = 0;
-    return grafo;
+Graph createGraph(){
+    Graph graph;
+    if(!(&graph)){
+        cout << "Can't create graph" << endl;
+        exit(1);
+    }
+    graph.numOfVertices = 0;
+    return graph;
 }
 
-void criarVertice(Grafo* grafo, string nome){
-    Vertices vertice;
+void createVertex(Graph* graph, string name){
+    Vertices vertex;
     
-    vertice.nome = nome;
-    vertice.numArestas = 0;
+    vertex.name = name;
+    vertex.numOfEdges = 0;
 
-    grafo->vertices[grafo->numVertices] = vertice;
-    grafo->numVertices += 1;
+    graph->vertices[graph->numOfVertices] = vertex;
+    graph->numOfVertices += 1;
 }
 
-void criarAresta(Vertices* verticeOrigem, Vertices* verticeDestino, int peso){
-    Arestas arestaOrigem;
-    Arestas arestaDestino;
+void createEdge(Vertices* vertexOrigin, Vertices* destinationVertex, int height){
+    Edges originEdge;
+    Edges destinationEdge;
 
-    arestaOrigem.peso = peso;
-    arestaDestino.peso = peso;
-    arestaOrigem.verticeDestino = verticeDestino;
-    arestaDestino.verticeDestino = verticeOrigem;
-    verticeOrigem->aresta[verticeOrigem->numArestas] = arestaOrigem;
-    verticeOrigem->numArestas += 1;
+    originEdge.height = height;
+    destinationEdge.height = height;
+    originEdge.destinationVertex = destinationVertex;
+    destinationEdge.destinationVertex = vertexOrigin;
+    vertexOrigin->aresta[vertexOrigin->numOfEdges] = originEdge;
+    vertexOrigin->numOfEdges += 1;
 
-    verticeDestino->aresta[verticeDestino->numArestas] = arestaDestino;
-    verticeDestino->numArestas += 1;
+    destinationVertex->aresta[destinationVertex->numOfEdges] = destinationEdge;
+    destinationVertex->numOfEdges += 1;
 }
 
-void listarGrafo(Grafo* grafo){
-    Vertices vertice;
-    for(int i = 0; i < grafo->numVertices; i++){
-        vertice = grafo->vertices[i];
-        cout << vertice.nome << " -> ";
-        for(int j = 0; j < vertice.numArestas; j++){
-            cout << "[" << vertice.aresta[j].verticeDestino->nome << ", peso " << vertice.aresta[j].peso << "] ";
+void listGraph(Graph* graph){
+    Vertices vertex;
+    for(int i = 0; i < graph->numOfVertices; i++){
+        vertex = graph->vertices[i];
+        cout << vertex.name << " -> ";
+        for(int j = 0; j < vertex.numOfEdges; j++){
+            cout << "[" << vertex.aresta[j].destinationVertex->name << ", height " << vertex.aresta[j].height << "] ";
         }
         cout << "\n";
     }
 }
 
-int main(){
-    Grafo grafo = criarGrafo();
-    char escolha;
+void menuOptionVerify(char getChoise){
+    int choise = getChoise - '0';
+        if(!isdigit(getChoise) || choise > 4 || choise < 1){
+            cout << "ERRO: Insert syntax error in input menu option." << endl;
+            exit(1); 
+        }
+}
 
-    string nome;
+void limitVerticesVerify(Graph* graph){
+    if(graph->numOfVertices == MAX_VERTICES){
+        cout << "ERRO: Number of vertices exceeded the limit (20)" << endl;
+        exit(1);
+    }
+}
+
+void limitEdgesVerify(Graph* graph, int chosenVertexInt){
+    if(graph->vertices[chosenVertexInt - 1].numOfEdges >= 19){
+        cout << "ERRO: Number of edges in vertex "<< graph->vertices[chosenVertexInt - 1].name << "exceeded the limit (19)" << endl;
+        exit(1);
+    }
+}
+
+void vertexOptionVerify(char chosenVertex){
+    if(!isdigit(chosenVertex)){
+        cout << "ERRO: Insert syntax error in input vertex option." << endl;
+        exit(1); 
+    }
+}
+
+int heightVerifyAndConvert(string line){
+    int height;
+    
+    for(int i = 0; i < (int)line.length(); i++){
+        if(!isdigit(line[i])){
+            cout << "ERRO: Insert syntax error in input height value." << endl;
+            exit(1);
+        }
+    }
+
+    height = atoi(line.c_str());
+    return height;
+}
+
+int main(){
+    Graph graph = createGraph();
+
+    char getChoise;
+    int choise;
+
+    string name;
 
     ifstream inputFile("src/input.txt");
     string line;
 
-    int peso;
-    char escolhaVertice;
-    int escolhaVerticeInt;
-    Vertices* verticeOrigem;
-    Vertices* verticeDestino;
+    int height;
+    char chosenVertex;
+    int chosenVertexInt;
+    Vertices* vertexOrigin;
+    Vertices* destinationVertex;
 
     while(1){
-        cout << "\n1. Adicionar Vertice\n";
-        cout << "2. Adicionar Aresta\n";
-        cout << "3. Listar grafo\n";
-        cout << "4. Sair\n";
-
+        cout << "\n1. Add vertex" << endl;
+        cout << "2. Add edge" << endl;
+        cout << "3. List graph" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter the number: \n" << endl;
         getline(inputFile, line);
+        getChoise = line[0];
 
-        escolha = line[0];
+        menuOptionVerify(getChoise);
 
-        switch(escolha){
-            case '1':
-                if(grafo.numVertices == MAX_VERTICES){
-                    cout << "Não é possivel adicionar mais vertices.\n";
-                    break;
-                }else{
-                    cout << "Qual o nome do vertice a ser criado? ";
-                    getline(inputFile, line);
-                    nome = line;
-                    criarVertice(&grafo, nome);
-                }
+        choise = getChoise - '0';
+
+        switch(choise){
+            case 1:
+                limitVerticesVerify(&graph);
+
+                cout << "Name of vertex: " << endl;
+                getline(inputFile, line);
+                name = line;
+                createVertex(&graph, name);
                 break;
-            case '2':
-                cout << "Escolha o vertice origem da aresta (Digite o numero correspondente):\n";
-                for(int i = 0; i < grafo.numVertices; i++){
-                    cout << i+1 << ". " << grafo.vertices[i].nome << "\n";
+            case 2:
+                cout << "Choose the origin vertex(enter the number): " << endl;
+                for(int i = 0; i < graph.numOfVertices; i++){
+                    cout << i+1 << ". " << graph.vertices[i].name << "\n";
                 }
                 getline(inputFile, line);
-                escolhaVertice = line[0];
-                escolhaVerticeInt = escolhaVertice - '0';
-                verticeOrigem = &(grafo.vertices[escolhaVerticeInt - 1]);
+                chosenVertex = line[0];
 
-                cout << "Escolha o vertice destino da aresta (Digite o numero correspondente):\n";
-                for(int i = 0; i < grafo.numVertices; i++){
-                    cout << i+1 << ". " << grafo.vertices[i].nome << "\n";
-                }
-                getline(inputFile, line);
-                escolhaVertice = line[0];
-                escolhaVerticeInt = escolhaVertice - '0';
-                verticeDestino = &(grafo.vertices[escolhaVerticeInt - 1]);
+                vertexOptionVerify(chosenVertex);
+
+                chosenVertexInt = chosenVertex - '0';
                 
-                cout << "Qual o peso da aresta? (num inteiro) ";
-                getline(inputFile, line);
-                peso = atoi(line.c_str());
+                limitEdgesVerify(&graph, chosenVertexInt);
 
-                criarAresta(verticeOrigem, verticeDestino, peso);
+                vertexOrigin = &(graph.vertices[chosenVertexInt - 1]);
+
+                cout << "Choose the destination vertex(enter the number): " << endl;
+                for(int i = 0; i < graph.numOfVertices; i++){
+                    cout << i+1 << ". " << graph.vertices[i].name << "\n";
+                }
+
+                getline(inputFile, line);
+                chosenVertex = line[0];
+                
+                vertexOptionVerify(chosenVertex);
+
+                chosenVertexInt = chosenVertex - '0';
+                
+                limitEdgesVerify(&graph, chosenVertexInt);
+
+                destinationVertex = &(graph.vertices[chosenVertexInt - 1]);
+                
+                cout << "New edge weight? (integer): " << endl;
+                getline(inputFile, line);
+                
+                height = heightVerifyAndConvert(line);
+
+                createEdge(vertexOrigin, destinationVertex, height);
                 break;
-            case '3':
-                listarGrafo(&grafo);
+            case 3:
+                listGraph(&graph);
                 break;
-            case '4':
+            case 4:
                 exit(1);
         }
     }
