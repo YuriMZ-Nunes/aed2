@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
 using namespace std;
@@ -29,33 +30,28 @@ Grafo criarGrafo(){
     return grafo;
 }
 
-void criarVertice(Grafo* grafo){
+void criarVertice(Grafo* grafo, string nome){
     Vertices vertice;
-    cout << "Qual o nome do vertice a ser criado? ";
-    cin >> vertice.nome;
+    
+    vertice.nome = nome;
     vertice.numArestas = 0;
 
     grafo->vertices[grafo->numVertices] = vertice;
     grafo->numVertices += 1;
 }
 
-void criarAresta(Vertices* verticeOrigem, Vertices* verticeDestino){
-    int peso;
-
+void criarAresta(Vertices* verticeOrigem, Vertices* verticeDestino, int peso){
     Arestas arestaOrigem;
     Arestas arestaDestino;
 
-    cout << "Qual o peso da aresta? (num inteiro) ";
-    cin >> peso;
-
     arestaOrigem.peso = peso;
     arestaDestino.peso = peso;
-    arestaOrigem.verticeDestino = verticeOrigem;
-    arestaDestino.verticeDestino = verticeDestino;
-    verticeOrigem->aresta[verticeOrigem->numArestas] = arestaDestino;
+    arestaOrigem.verticeDestino = verticeDestino;
+    arestaDestino.verticeDestino = verticeOrigem;
+    verticeOrigem->aresta[verticeOrigem->numArestas] = arestaOrigem;
     verticeOrigem->numArestas += 1;
 
-    verticeDestino->aresta[verticeDestino->numArestas] = arestaOrigem;
+    verticeDestino->aresta[verticeDestino->numArestas] = arestaDestino;
     verticeDestino->numArestas += 1;
 }
 
@@ -71,11 +67,18 @@ void listarGrafo(Grafo* grafo){
     }
 }
 
-int main(){
+int main(int argc, char *argv[]){
     Grafo grafo = criarGrafo();
-    int escolha;
+    char escolha;
 
-    int escolhaVertice;
+    string nome;
+
+    ifstream inputFile("src/input.txt");
+    string line;
+
+    int peso;
+    char escolhaVertice;
+    int escolhaVerticeInt;
     Vertices* verticeOrigem;
     Vertices* verticeDestino;
 
@@ -85,37 +88,51 @@ int main(){
         cout << "3. Listar grafo\n";
         cout << "4. Sair\n";
 
-        cin >> escolha;
+        getline(inputFile, line);
+
+        escolha = line[0];
 
         switch(escolha){
-            case 1:
+            case '1':
                 if(grafo.numVertices == MAX_VERTICES){
                     cout << "Não é possivel adicionar mais vertices.\n";
                     break;
                 }else{
-                    criarVertice(&grafo);
+                    cout << "Qual o nome do vertice a ser criado? ";
+                    getline(inputFile, line);
+                    nome = line;
+                    criarVertice(&grafo, nome);
                 }
                 break;
-            case 2:
+            case '2':
                 cout << "Escolha o vertice origem da aresta (Digite o numero correspondente):\n";
                 for(int i = 0; i < grafo.numVertices; i++){
                     cout << i+1 << ". " << grafo.vertices[i].nome << "\n";
                 }
-                cin >> escolhaVertice;
-                verticeOrigem = &(grafo.vertices[escolhaVertice - 1]);
+                getline(inputFile, line);
+                escolhaVertice = line[0];
+                escolhaVerticeInt = escolhaVertice - '0';
+                verticeOrigem = &(grafo.vertices[escolhaVerticeInt - 1]);
 
                 cout << "Escolha o vertice destino da aresta (Digite o numero correspondente):\n";
                 for(int i = 0; i < grafo.numVertices; i++){
                     cout << i+1 << ". " << grafo.vertices[i].nome << "\n";
                 }
-                cin >> escolhaVertice;
-                verticeDestino = &(grafo.vertices[escolhaVertice - 1]);
+                getline(inputFile, line);
+                escolhaVertice = line[0];
+                escolhaVerticeInt = escolhaVertice - '0';
+                verticeDestino = &(grafo.vertices[escolhaVerticeInt - 1]);
+                
+                cout << "Qual o peso da aresta? (num inteiro) ";
+                getline(inputFile, line);
+                peso = atoi(line.c_str());
 
-                criarAresta(verticeOrigem, verticeDestino);
+                criarAresta(verticeOrigem, verticeDestino, peso);
                 break;
-            case 3:
+            case '3':
                 listarGrafo(&grafo);
-            case 4:
+                break;
+            case '4':
                 exit(1);
         }
     }
