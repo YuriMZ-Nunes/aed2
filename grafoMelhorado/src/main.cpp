@@ -67,7 +67,7 @@ void listarGrafo(Grafo* grafo){
     }
 }
 
-int main(int argc, char *argv[]){
+int main(){
     Grafo grafo = criarGrafo();
     char escolha;
 
