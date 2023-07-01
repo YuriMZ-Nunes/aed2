@@ -9,20 +9,19 @@ int main(){
     int choice;
     Graph* graph = new Graph;
 
+    makeGraph(graph);
+    cout << "\n--Graph created--" << endl;
+
     while(1){
-        cout << "\n1. Generate graph" << endl;
-        cout << "2. Show graph" << endl;
-        cout << "3. Dijikstra Algorithm" << endl;
+        cout << "\n1. Show graph" << endl;
+        cout << "2. Dijikstra Algorithm" << endl;
         cout << "Enter option: ";
         cin >> choice;
 
         switch(choice){
             case 1:
-                makeGraph(graph);
-                cout << "\n--Graph created--" << endl;
-                break;
-            case 2:
                 listGraph(graph);
+                break;
         }
     }
 }

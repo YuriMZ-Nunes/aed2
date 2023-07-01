@@ -114,22 +114,23 @@ void makeGraph(Graph* graph){
                 break;
             case 2:
                 getline(inputFile, line);
-                chosenVertex = line[0];
+                chosenVertexInt = atoi(line.c_str());
 
-                vertexOptionVerify(chosenVertex);
+                //vertexOptionVerify(chosenVertex);
 
-                chosenVertexInt = chosenVertex - '0';
+                //chosenVertexInt = chosenVertex - '0';
                 
                 limitEdgesVerify(graph, chosenVertexInt);
 
                 vertexOrigin = &(graph->vertices[chosenVertexInt - 1]);
 
                 getline(inputFile, line);
-                chosenVertex = line[0];
+                //chosenVertex = line[0];
+                chosenVertexInt = atoi(line.c_str());
                 
-                vertexOptionVerify(chosenVertex);
+                //vertexOptionVerify(chosenVertex);
 
-                chosenVertexInt = chosenVertex - '0';
+                //chosenVertexInt = chosenVertex - '0';
                 
                 limitEdgesVerify(graph, chosenVertexInt);
 
@@ -145,10 +146,8 @@ void makeGraph(Graph* graph){
                 listGraph(graph);
                 break;
             case 4:
-                exit(1);
-            case 5: 
                 inputFile.close();
-                break;
+                break; 
         }
     }
 }
