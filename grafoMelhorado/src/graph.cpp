@@ -18,12 +18,12 @@ void createVertex(Graph* graph, string name){
     graph->numOfVertices += 1;
 }
 
-void createEdge(Vertices* vertexOrigin, Vertices* destinationVertex, int height){
-    vertexOrigin->edge[vertexOrigin->numOfEdges].height = height;
-    destinationVertex->edge[destinationVertex->numOfEdges].height = height;
+void createEdge(Vertices* vertexOrigin, int origin, Vertices* destinationVertex, int destination, int height){
+    vertexOrigin->edge[destination].height = height;
+    destinationVertex->edge[origin].height = height;
 
-    vertexOrigin->edge[vertexOrigin->numOfEdges].destinationVertex = destinationVertex;
-    destinationVertex->edge[destinationVertex->numOfEdges].destinationVertex = vertexOrigin;
+    vertexOrigin->edge[destination].destinationVertex = destinationVertex;
+    destinationVertex->edge[origin].destinationVertex = vertexOrigin;
 
     vertexOrigin->numOfEdges += 1;
     destinationVertex->numOfEdges += 1;
@@ -33,8 +33,9 @@ void listGraph(Graph* graph){
     cout << "\n";
     for(int i = 0; i < graph->numOfVertices; i++){
         cout << graph->vertices[i].name << " -> ";
-        for(int j = 0; j < graph->vertices[i].numOfEdges; j++){
-            cout << "[" << graph->vertices[i].edge[j].destinationVertex->name << ", height " << graph->vertices[i].edge[j].height << "] ";
+        for(int j = 0; j < graph->numOfVertices; j++){
+            if(graph->vertices[i].edge[j].height != 0)
+                cout << "[" << graph->vertices[i].edge[j].destinationVertex->name << ", height " << graph->vertices[i].edge[j].height << "] ";
         }
         cout << "\n";
     }
@@ -93,8 +94,9 @@ void makeGraph(Graph* graph){
     string line;
 
     int height;
-    char chosenVertex;
-    int chosenVertexInt;
+    //char chosenVertex;
+    int chosenVertexInt1;
+    int chosenVertexInt2;
     Vertices* vertexOrigin;
     Vertices* destinationVertex;
 
@@ -114,33 +116,33 @@ void makeGraph(Graph* graph){
                 break;
             case 2:
                 getline(inputFile, line);
-                chosenVertexInt = atoi(line.c_str());
+                chosenVertexInt1 = atoi(line.c_str());
 
                 //vertexOptionVerify(chosenVertex);
 
                 //chosenVertexInt = chosenVertex - '0';
                 
-                limitEdgesVerify(graph, chosenVertexInt);
+                limitEdgesVerify(graph, chosenVertexInt1);
 
-                vertexOrigin = &(graph->vertices[chosenVertexInt - 1]);
+                vertexOrigin = &(graph->vertices[chosenVertexInt1 - 1]);
 
                 getline(inputFile, line);
                 //chosenVertex = line[0];
-                chosenVertexInt = atoi(line.c_str());
+                chosenVertexInt2 = atoi(line.c_str());
                 
                 //vertexOptionVerify(chosenVertex);
 
                 //chosenVertexInt = chosenVertex - '0';
                 
-                limitEdgesVerify(graph, chosenVertexInt);
+                limitEdgesVerify(graph, chosenVertexInt2);
 
-                destinationVertex = &(graph->vertices[chosenVertexInt - 1]);
+                destinationVertex = &(graph->vertices[chosenVertexInt2 - 1]);
                 
                 getline(inputFile, line);
                 
                 height = heightVerifyAndConvert(line);
 
-                createEdge(vertexOrigin, destinationVertex, height);
+                createEdge(vertexOrigin, chosenVertexInt1 - 1, destinationVertex, chosenVertexInt2 - 1, height);
                 break;
             case 3:
                 listGraph(graph);

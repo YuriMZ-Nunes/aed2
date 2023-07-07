@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "graph.h"
+#include "dijikstra.h"
 
 using namespace std;
 
@@ -22,6 +23,8 @@ int main(){
             case 1:
                 listGraph(graph);
                 break;
+            case 2:
+                dijikstra(graph);
         }
     }
 }
