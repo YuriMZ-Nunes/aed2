@@ -29,6 +29,11 @@ void createEdge(Vertices* vertexOrigin, int origin, Vertices* destinationVertex,
     destinationVertex->numOfEdges += 1;
 }
 
+void listOptions(Graph* graph){
+    for(int i = 0; i < graph->numOfVertices; i++)
+        cout << i+1 << ". " << graph->vertices[i].name << endl;
+}
+
 void listGraph(Graph* graph){
     cout << "\n";
     for(int i = 0; i < graph->numOfVertices; i++){

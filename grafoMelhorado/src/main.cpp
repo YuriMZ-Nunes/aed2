@@ -17,6 +17,7 @@ int main(){
         cout << "\n1. Show graph" << endl;
         cout << "2. Dijikstra Algorithm" << endl;
         cout << "Enter option: ";
+        cout << endl;
         cin >> choice;
 
         switch(choice){
@@ -24,7 +25,12 @@ int main(){
                 listGraph(graph);
                 break;
             case 2:
-                dijikstra(graph);
+                listOptions(graph);
+                cout << "Select the target: ";
+                cout << endl;
+                cin >> choice;
+                int minPath = dijikstra(graph, choice);
+                cout << "The min path to " << graph->vertices[choice - 1].name << " is " << minPath << "." << endl;
         }
     }
 }

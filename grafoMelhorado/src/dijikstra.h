@@ -3,6 +3,6 @@
 
 #include "graph.h"
 
-void dijikstra(Graph* graph);
+int dijikstra(Graph* graph, int src);
 
 #endif

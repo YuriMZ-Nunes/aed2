@@ -35,17 +35,9 @@ int minDistance(int dist[], bool sptSet[], int numOfVertices){
     return min_index;
 }
 
-void dijikstra(Graph* graph){
+int dijikstra(Graph* graph, int src){
 
     int **graphMatrix = createMatrix(graph);
-
-    for(int i = 0; i < graph->numOfVertices; i++){
-        cout << "{";
-        for(int j = 0; j < graph->numOfVertices; j++){
-            cout << graphMatrix[i][j] << ", ";
-        }
-        cout << "}" << endl;
-    }
 
     int dist[graph->numOfVertices]; //vector with distances
 
@@ -60,10 +52,12 @@ void dijikstra(Graph* graph){
 
         int u = minDistance(dist, sptSet, graph->numOfVertices);
 
-        sptSet[u] = true;
+        sptSet[u] = true; 
 
         for(int i = 0; i < graph->numOfVertices; i++)
             if(!sptSet[i] && graphMatrix[u][i] && dist[u] != INT_MAX && dist[u] + graphMatrix[u][i] < dist[i])
                 dist[i] = dist[u] + graphMatrix[u][i];
-    }       
+    }
+
+    return dist[src - 1];    
 }

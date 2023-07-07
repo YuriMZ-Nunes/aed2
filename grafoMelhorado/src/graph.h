@@ -26,5 +26,6 @@ typedef struct{
 
 void makeGraph(Graph* graph);
 void listGraph(Graph* graph);
+void listOptions(Graph* graph);
 
 #endif
