@@ -8,6 +8,8 @@ using namespace std;
 
 int main(){
     int choice;
+    int origin;
+    int target;
     Graph* graph = new Graph;
 
     makeGraph(graph);
@@ -26,11 +28,15 @@ int main(){
                 break;
             case 2:
                 listOptions(graph);
+                cout << "Select the origin: ";
+                cout << endl;
+                cin >> origin;
+                listOptions(graph);
                 cout << "Select the target: ";
                 cout << endl;
-                cin >> choice;
-                int minPath = dijikstra(graph, choice);
-                cout << "The min path to " << graph->vertices[choice - 1].name << " is " << minPath << "." << endl;
+                cin >> target;
+                int minPath = dijikstra(graph, origin, target);
+                cout << "The min path to " << graph->vertices[target - 1].name << " is " << minPath << "." << endl;
         }
     }
 }

@@ -95,7 +95,7 @@ void makeGraph(Graph* graph){
     char getChoice;
     int choice;
 
-    ifstream inputFile("src/input.txt");
+    ifstream inputFile("src/input2.txt");
     string line;
 
     int height;

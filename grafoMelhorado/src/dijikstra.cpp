@@ -35,7 +35,7 @@ int minDistance(int dist[], bool sptSet[], int numOfVertices){
     return min_index;
 }
 
-int dijikstra(Graph* graph, int src){
+int dijikstra(Graph* graph, int origin, int target){
 
     int **graphMatrix = createMatrix(graph);
 
@@ -46,7 +46,7 @@ int dijikstra(Graph* graph, int src){
     for(int i = 0; i < graph->numOfVertices; i++)
         dist[i] = INT_MAX, sptSet[i] = false;
     
-    dist[0] = 0;
+    dist[origin - 1] = 0;
 
     for(int count = 0; count < graph->numOfVertices - 1; count++){
 
@@ -59,5 +59,5 @@ int dijikstra(Graph* graph, int src){
                 dist[i] = dist[u] + graphMatrix[u][i];
     }
 
-    return dist[src - 1];    
+    return dist[target - 1];  
 }
