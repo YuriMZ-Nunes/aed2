@@ -99,7 +99,6 @@ void makeGraph(Graph* graph){
     string line;
 
     int height;
-    //char chosenVertex;
     int chosenVertexInt1;
     int chosenVertexInt2;
     Vertices* vertexOrigin;
@@ -122,22 +121,13 @@ void makeGraph(Graph* graph){
             case 2:
                 getline(inputFile, line);
                 chosenVertexInt1 = atoi(line.c_str());
-
-                //vertexOptionVerify(chosenVertex);
-
-                //chosenVertexInt = chosenVertex - '0';
                 
                 limitEdgesVerify(graph, chosenVertexInt1);
 
                 vertexOrigin = &(graph->vertices[chosenVertexInt1 - 1]);
 
                 getline(inputFile, line);
-                //chosenVertex = line[0];
                 chosenVertexInt2 = atoi(line.c_str());
-                
-                //vertexOptionVerify(chosenVertex);
-
-                //chosenVertexInt = chosenVertex - '0';
                 
                 limitEdgesVerify(graph, chosenVertexInt2);
 
