@@ -4,14 +4,14 @@
 
 #define INT_MAX 1000000 // equivale ao infinito no calculo de distancias
 
-// cria a matriz de adjacencia do grafo pois assim é mais fácil de rodar o algoritmo de Dijikstra
+// cria a matriz de adjacência do grafo pois assim é mais fácil de rodar o algoritmo de Dijikstra
 int** createMatrix(Graph* graph){
     int **graphMatrix = (int **)malloc(graph->numOfVertices * sizeof(int *)); // aloca espaço para a matriz
 
     for(int row = 0; row < graph->numOfVertices; row++) //aloca espaço para cada linha da matriz
         graphMatrix[row] = (int *)malloc(graph->numOfVertices * sizeof(int));
 
-    //preenche a matriz com os valores da lista de adjacencia 
+    //preenche a matriz com os valores da lista de adjacência 
     for(int i = 0; i < graph->numOfVertices; i++){
         for(int j = 0; j< graph->numOfVertices; j++){
             if(graph->vertices[i].edge[j].height){
@@ -25,12 +25,12 @@ int** createMatrix(Graph* graph){
     return graphMatrix;
 }
 
-// retorna o index do vertice com a menor distancia 
+// retorna o index do vértice com a menor distancia 
 int minDistance(int dist[], bool sptSet[], int numOfVertices){
     int min = INT_MAX;
     int min_index;
 
-    // percorre o vertices e verifica qual é o index do vertice com menor distancia 
+    // percorre o vertices e verifica qual é o index do vértice com menor distancia 
     for(int i = 0; i < numOfVertices; i++)
         if(sptSet[i] == false && dist[i] <= min)
             min = dist[i], min_index = i;
@@ -40,9 +40,9 @@ int minDistance(int dist[], bool sptSet[], int numOfVertices){
 
 int dijikstra(Graph* graph, int origin, int target){
 
-    int **graphMatrix = createMatrix(graph); // chama a função para criar a matris
+    int **graphMatrix = createMatrix(graph); // chama a função para criar a matriz
 
-    int dist[graph->numOfVertices]; //vetor usado pra armazenar as distancias pra cada vertice do grafo
+    int dist[graph->numOfVertices]; //vetor usado pra armazenar as distancias pra cada vértice do grafo
 
     bool sptSet[graph->numOfVertices]; //vetor booleano usado para armazenar quais vertices foram ou não visitados
 
