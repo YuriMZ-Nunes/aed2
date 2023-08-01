@@ -55,29 +55,36 @@ int main(){
                 cout << "Select the origin: ";
                 cout << endl;
                 cin >> origin;
+
                 listOptions(graph);
                 cout << "Select the target: ";
                 cout << endl;
                 cin >> target;
+
                 minPath = dijikstra(graph, origin, target); // recebe da função Dijikstra o menor caminho
+                
                 cout << "The min path to " << graph->vertices[target - 1].name << " is " << minPath << "." << endl;
                 break;
             case 3:
                 mstKruskal = kruskal(kruskalGraph);
                 cout << "The MST using the Kruskal Algorithm is: " << endl;
+
                 for(int i = 0; i < (int)mstKruskal.size(); i++){
                     mstKruskalCount += mstKruskal[i].height;
                     cout << mstKruskal[i].originVertex->name << " -> " << mstKruskal[i].destinationVertex->name << endl;
                 }
+
                 cout << "MST Cost: " << mstKruskalCount << endl;
                 break;
             case 4:
                 mstPrim = prim(graph);
                 cout << "The MST using the Prim Algorithm is: " << endl;
+
                 for(int i = 0; i < (int)mstPrim.size(); i++){
                     cout << mstPrim[i].originVertex->name << " -> " << mstPrim[i].destinationVertex->name << endl;
                     mstPrimCount += mstPrim[i].height;
                 }
+
                 cout << "MST Cost: " << mstPrimCount << endl;
                 break;
             case 5:
