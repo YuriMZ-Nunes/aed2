@@ -39,6 +39,7 @@ int main(){
         cout << "2. Dijikstra Algorithm" << endl;
         cout << "3. Kruskal Algorithm" << endl;
         cout << "4. Prim Algorithm" << endl;
+        cout << "5. Exit" << endl;
         cout << "Enter option: ";
         cout << endl;   
         cin >> choice;
@@ -78,6 +79,8 @@ int main(){
                 }
                 cout << "MST Cost: " << mstPrimCount << endl;
                 break;
+            case 5:
+                exit(1);
             default:
                 cout << "Invalid option." << endl;
         }

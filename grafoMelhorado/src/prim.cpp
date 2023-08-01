@@ -28,7 +28,6 @@ vector<Edges> prim(Graph* graph){
         Edges current = minEdges.top();
         minEdges.pop();
 
-        Vertices* originVertex = current.originVertex;
         Vertices* destVertex = current.destinationVertex;
 
         if(!visited[destVertex]){
