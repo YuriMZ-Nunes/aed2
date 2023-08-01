@@ -7,8 +7,9 @@ const int MAX_VERTICES = 20;
 
 typedef struct Vertices Vertices;
 
-typedef struct{
+typedef struct Edges{
     int height;
+    Vertices* originVertex;
     Vertices* destinationVertex;
 }Edges;
 
@@ -19,7 +20,7 @@ struct Vertices{
 };
 
 
-typedef struct{
+typedef struct Graph{
     Vertices vertices[MAX_VERTICES];
     int numOfVertices;
 }Graph;
@@ -27,5 +28,6 @@ typedef struct{
 void makeGraph(Graph* graph);
 void listGraph(Graph* graph);
 void listOptions(Graph* graph);
+int **createMatrix(Graph* graph);
 
 #endif

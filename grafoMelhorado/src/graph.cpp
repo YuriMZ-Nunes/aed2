@@ -22,11 +22,14 @@ void createVertex(Graph* graph, string name){
 
 // cria uma aresta entre o vertice origem e vertice destino
 void createEdge(Vertices* vertexOrigin, int origin, Vertices* destinationVertex, int destination, int height){
-    vertexOrigin->edge[destination].height = height;
-    destinationVertex->edge[origin].height = height;
+    vertexOrigin->edge[vertexOrigin->numOfEdges].height = height;
+    destinationVertex->edge[destinationVertex->numOfEdges].height = height;
 
-    vertexOrigin->edge[destination].destinationVertex = destinationVertex;
-    destinationVertex->edge[origin].destinationVertex = vertexOrigin;
+    vertexOrigin->edge[vertexOrigin->numOfEdges].originVertex = vertexOrigin;
+    destinationVertex->edge[destinationVertex->numOfEdges].originVertex = destinationVertex;
+
+    vertexOrigin->edge[vertexOrigin->numOfEdges].destinationVertex = destinationVertex;
+    destinationVertex->edge[destinationVertex->numOfEdges].destinationVertex = vertexOrigin;
 
     vertexOrigin->numOfEdges += 1;
     destinationVertex->numOfEdges += 1;
@@ -43,9 +46,9 @@ void listGraph(Graph* graph){
     cout << "\n";
     for(int i = 0; i < graph->numOfVertices; i++){
         cout << graph->vertices[i].name << " -> ";
-        for(int j = 0; j < graph->numOfVertices; j++){
-            if(graph->vertices[i].edge[j].height != 0)
-                cout << "[" << graph->vertices[i].edge[j].destinationVertex->name << ", height " << graph->vertices[i].edge[j].height << "] ";
+        for(int j = 0; j < graph->vertices[i].numOfEdges; j++){
+            cout << "[" << graph->vertices[i].edge[j].destinationVertex->name << ", height " << graph->vertices[i].edge[j].height << "] ";
+            //if(graph->vertices[i].edge[j].height != 0)
         }
         cout << "\n";
     }
@@ -165,4 +168,29 @@ void makeGraph(Graph* graph){
                 break; 
         }
     }
+}
+
+// cria a matriz de adjacência do grafo pois assim é mais fácil de rodar o algoritmo de Dijikstra
+int** createMatrix(Graph* graph){
+    int **graphMatrix = (int **)malloc(graph->numOfVertices * sizeof(int *)); // aloca espaço para a matriz
+
+    for(int row = 0; row < graph->numOfVertices; row++) //aloca espaço para cada linha da matriz
+        graphMatrix[row] = (int *)malloc(graph->numOfVertices * sizeof(int));
+
+    int position = 0;
+    bool find = false;
+    for(int i = 0; i < graph->numOfVertices; i++){
+        position = 0;
+        for(int j = 0; j < graph->numOfVertices; j++){
+            position = 0;
+            while(graph->vertices[i].edge[j].destinationVertex != &graph->vertices[position] && position < 20){
+                position++;
+            }
+            if(graph->vertices[i].edge[j].destinationVertex == &graph->vertices[position]){
+                graphMatrix[i][position] = graph->vertices[i].edge[j].height;
+            }
+        }
+    }
+
+    return graphMatrix;
 }

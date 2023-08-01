@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -15,10 +16,22 @@ int main(){
     int target; // armazena a escolha do vertice destino
     Graph* graph = new Graph; // cria um novo grafo
 
-    vector<Edges> mst;
+    int minPath;
+
 
     makeGraph(graph);   // cria o grafo com base nos inputs
     cout << "\n--Graph created--" << endl;
+
+    //algoritmo de kruskal
+    Graph* kruskalGraph = new Graph;
+    memcpy(&kruskalGraph, &graph, sizeof(graph));
+    vector<Edges> mstKruskal;
+    int mstKruskalCount = 0;
+
+    //algoritmo de Prim
+    vector<Edges> mstPrim;
+    int mstPrimCount = 0;
+    
 
     while(1){
         // display menu
@@ -44,17 +57,26 @@ int main(){
                 cout << "Select the target: ";
                 cout << endl;
                 cin >> target;
-                int minPath = dijikstra(graph, origin, target); // recebe da função Dijikstra o menor caminho
+                minPath = dijikstra(graph, origin, target); // recebe da função Dijikstra o menor caminho
                 cout << "The min path to " << graph->vertices[target - 1].name << " is " << minPath << "." << endl;
+                break;
             case 3:
-                mst = kruskal(graph);
-                cout << "Minimun Spanning Tree:" << endl;
-                for(Edges& edge : mst){
-                    cout << edge.destinationVertex->name << " - " << edge.destinationVertex->edge[0].destinationVertex->name;
-                    cout << " Height: " << edge.height << endl;
+                mstKruskal = kruskal(kruskalGraph);
+                cout << "The MST using the Kruskal Algorithm is: " << endl;
+                for(int i = 0; i < (int)mstKruskal.size(); i++){
+                    mstKruskalCount += mstKruskal[i].height;
+                    cout << mstKruskal[i].originVertex->name << " -> " << mstKruskal[i].destinationVertex->name << endl;
                 }
+                cout << "MST Cost: " << mstKruskalCount << endl;
                 break;
             case 4:
+                mstPrim = prim(graph);
+                cout << "The MST using the Prim Algorithm is: " << endl;
+                for(int i = 0; i < (int)mstPrim.size(); i++){
+                    cout << mstPrim[i].originVertex->name << " -> " << mstPrim[i].destinationVertex->name << endl;
+                    mstPrimCount += mstPrim[i].height;
+                }
+                cout << "MST Cost: " << mstPrimCount << endl;
                 break;
             default:
                 cout << "Invalid option." << endl;

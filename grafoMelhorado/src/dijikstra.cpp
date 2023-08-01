@@ -4,27 +4,6 @@
 
 #define INT_MAX 1000000 // equivale ao infinito no calculo de distancias
 
-// cria a matriz de adjacência do grafo pois assim é mais fácil de rodar o algoritmo de Dijikstra
-int** createMatrix(Graph* graph){
-    int **graphMatrix = (int **)malloc(graph->numOfVertices * sizeof(int *)); // aloca espaço para a matriz
-
-    for(int row = 0; row < graph->numOfVertices; row++) //aloca espaço para cada linha da matriz
-        graphMatrix[row] = (int *)malloc(graph->numOfVertices * sizeof(int));
-
-    //preenche a matriz com os valores da lista de adjacência 
-    for(int i = 0; i < graph->numOfVertices; i++){
-        for(int j = 0; j< graph->numOfVertices; j++){
-            if(graph->vertices[i].edge[j].height){
-                graphMatrix[i][j] = graph->vertices[i].edge[j].height;
-            }else{
-                graphMatrix[i][j] = 0;
-            }
-        }
-    }
-
-    return graphMatrix;
-}
-
 // retorna o index do vértice com a menor distancia 
 int minDistance(int dist[], bool sptSet[], int numOfVertices){
     int min = INT_MAX;

@@ -3,6 +3,6 @@
 
 #include "graph.h"
 
-vector<Edges> kruskal(Graph* graph);
+vector<Edges> kruskal(Graph* graph); 
 
 #endif
